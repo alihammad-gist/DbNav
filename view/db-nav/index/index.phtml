@@ -1,0 +1,12 @@
+<table class="table">
+    <thead>
+    <td>Id</td>
+    <td>Container name</td>
+    </thead>
+    <?php foreach($this->rows as $row): ?>
+    <tr>
+        <td><?php echo $row['id']; ?></td>
+        <td><?php echo $row['container_name']; ?></td>
+    </tr>
+    <?php endforeach; ?>
+</table>
