@@ -37,10 +37,6 @@ declare module Tree {
     interface TreeProps {
         data: Data;
         factory: ItemReactElementFactory;
-        key_hash?: string;
-        children_hash?: string;
-    }
-
-    interface TreeState {
+        children_hash: string;
     }
 }
