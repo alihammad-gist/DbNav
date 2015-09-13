@@ -4,6 +4,7 @@
 import test = require('tape');
 import helper = require('./helper');
 import React = require('react/addons');
+import utils = require('./test_utils');
 
 const TestUtils = React.addons.TestUtils;
 const DOM = React.DOM;
@@ -28,7 +29,5 @@ test("Testing buildUl", (t) => {
         },
         children_hash: "pages"
     };
-    const renderer = TestUtils.createRenderer();
-    renderer.render(helper.createUl(d, props));
-    console.log(JSON.stringify(renderer.getRenderOutput()));
+    utils.convertReactElToReactExpectation(helper.createUl(d, props));
 });

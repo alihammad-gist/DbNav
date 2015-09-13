@@ -3,6 +3,7 @@
 var test = require('tape');
 var helper = require('./helper');
 var React = require('react/addons');
+var utils = require('./test_utils');
 var TestUtils = React.addons.TestUtils;
 var DOM = React.DOM;
 test("Testing buildUl", function (t) {
@@ -15,8 +16,6 @@ test("Testing buildUl", function (t) {
         },
         children_hash: "pages"
     };
-    var renderer = TestUtils.createRenderer();
-    renderer.render(helper.createUl(d, props));
-    console.log(JSON.stringify(renderer.getRenderOutput()));
+    utils.convertReactElToReactExpectation(helper.createUl(d, props));
 });
 //# sourceMappingURL=helper_test.js.map
