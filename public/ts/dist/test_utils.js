@@ -16,10 +16,8 @@ function truncateReactRenderedOutput(tree) {
     for (var key in tree) {
         if (tree.hasOwnProperty(key)) {
             switch (key) {
-                case 'props':
-                    if (tree['props'].hasOwnProperty('children')) {
-                        exp.children = truncateReactRenderedOutput(tree['props']['children']);
-                    }
+                case '_store':
+                    break;
             }
         }
     }
