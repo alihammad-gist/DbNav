@@ -9,15 +9,18 @@ function convertReactElToReactExpectation(el) {
     var renderer = TestUtils.createRenderer();
     renderer.render(el);
     var tree = renderer.getRenderOutput(), exp;
+    console.log(JSON.stringify(tree, null, 4));
     console.log(JSON.stringify(truncateReactRenderedOutput(tree), null, 4));
 }
 exports.convertReactElToReactExpectation = convertReactElToReactExpectation;
 function truncateReactRenderedOutput(tree) {
-    var exp;
+    var exp = {};
     for (var key in tree) {
         if (tree.hasOwnProperty(key)) {
-            exp = { type: tree[key]['type'], key: tree[key]['key'] };
-            if (tree[key].hasOwnProperty('_store')) {
+            if (key === 'type' || key === 'key') {
+                exp[key] = tree[key];
+            }
+            else if (tree[key] !== null && tree[key].hasOwnProperty('_store')) {
                 if (tree[key]['_store'].hasOwnProperty('props')) {
                     var p = tree[key]['_store']['props'];
                     // has children

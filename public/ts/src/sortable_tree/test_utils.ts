@@ -11,7 +11,7 @@ interface ReactExpectation {
     type: string
     key?: string
     props?: ExpectationProps
-    children?: ReactExpectation
+    children?: ReactExpectation[] | string
 }
 
 const TestUtils = React.addons.TestUtils;
@@ -27,26 +27,28 @@ export function convertReactElToReactExpectation(el: React.ReactElement<any>): R
     renderer.render(el);
     var tree = renderer.getRenderOutput(),
         exp: ReactExpectation;
+    console.log(JSON.stringify(tree, null, 4));
     console.log(JSON.stringify(truncateReactRenderedOutput(tree), null, 4));
 }
 
 function truncateReactRenderedOutput(tree: any): ReactExpectation {
-    var exp: ReactExpectation;
-    for (var key in tree) {
-        if (tree.hasOwnProperty(key)) {
-            exp = { type: tree[key]['type'], key: tree[key]['key'] };
-            if (tree[key].hasOwnProperty('_store')) {
-                if (tree[key]['_store'].hasOwnProperty('props')) {
-                    var p: ExpectationProps = tree[key]['_store']['props'];
-                    // has children
-                    if (p.hasOwnProperty('children')) {
-                        exp.children = truncateReactRenderedOutput(p['children']);
-                    }
-                    delete p['children'];
-                    exp.props = p;
-                }
+    var exp = <ReactExpectation>{};
+    // its expected that react elements will have 'key' and 'type' index
+    exp.type = tree.type;
+    exp.key = tree.key;
+    if (tree.hasOwnProperty('children') && tree.children && !isEmpty(tree.children)) {
+        if (typeof tree.children === 'string') {
+            exp.children = tree.children;
+        } else {
+            exp.children = <ReactExpectation[]>[];
+            for (var k in tree.children) {
+                exp.children
             }
         }
     }
     return exp;
 }
+
+function isEmpty(value): boolean {
+    return Boolean(value && typeof value == 'object') && !Object.keys(value).length;
+};
