@@ -1,38 +1,32 @@
 ///<reference path="../../typings/tsd.d.ts"/>
-var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
-function checkReactTree(exp, el, t) {
-    return false;
+/**
+ * Checks if provided object is empty
+ * @param  {Object}  value
+ * @return {boolean}
+ */
+function isEmpty(value) {
+    return Boolean(value && typeof value == 'object') && !Object.keys(value).length;
 }
-exports.checkReactTree = checkReactTree;
-function convertReactElToReactExpectation(el) {
-    var renderer = TestUtils.createRenderer();
-    renderer.render(el);
-    var tree = renderer.getRenderOutput(), exp;
-    console.log(JSON.stringify(tree, null, 4));
-    console.log(JSON.stringify(truncateReactRenderedOutput(tree), null, 4));
-}
-exports.convertReactElToReactExpectation = convertReactElToReactExpectation;
-function truncateReactRenderedOutput(tree) {
-    var exp = {};
-    for (var key in tree) {
-        if (tree.hasOwnProperty(key)) {
-            if (key === 'type' || key === 'key') {
-                exp[key] = tree[key];
-            }
-            else if (tree[key] !== null && tree[key].hasOwnProperty('_store')) {
-                if (tree[key]['_store'].hasOwnProperty('props')) {
-                    var p = tree[key]['_store']['props'];
-                    // has children
-                    if (p.hasOwnProperty('children')) {
-                        exp.children = truncateReactRenderedOutput(p['children']);
-                    }
-                    delete p['children'];
-                    exp.props = p;
-                }
-            }
-        }
+;
+/**
+ * Returns children of passed reactnode [renderedOutput of shadowRenderer]
+ * pass in list of arguments after tree as index to be retreived
+ * @param  {any}                tree Pass by value
+ * @param  {string[]}           idx  Path to desired node
+ * @return {ReactExpectation[]}
+ */
+function getNodeOfTree(tree) {
+    var idx = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        idx[_i - 1] = arguments[_i];
     }
-    return exp;
+    var nest = Array.prototype.slice.call(idx, 1);
+    for (var i = 0; i < nest.length; i++) {
+        if (!tree || !tree.hasOwnProperty(nest[i])) {
+            return null;
+        }
+        tree = tree[nest[i]];
+    }
+    return tree;
 }
 //# sourceMappingURL=test_utils.js.map

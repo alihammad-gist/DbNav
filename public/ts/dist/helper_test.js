@@ -3,7 +3,7 @@
 var test = require('tape');
 var helper = require('./helper');
 var React = require('react/addons');
-var utils = require('./test_utils');
+var utils = require('./react_utils');
 var TestUtils = React.addons.TestUtils;
 var DOM = React.DOM;
 test("Testing buildUl", function (t) {
@@ -12,10 +12,12 @@ test("Testing buildUl", function (t) {
     var props = {
         data: d,
         factory: function (item) {
-            return DOM.i({}, "hello");
+            return DOM.i({ id: "italic-master", className: "italic-group" }, "hello");
         },
         children_hash: "pages"
     };
-    utils.convertReactElToReactExpectation(helper.createUl(d, props));
+    var r = TestUtils.createRenderer();
+    r.render(helper.createUl(d, props));
+    console.log(JSON.stringify(utils.convertToElementExpectation(r.getRenderOutput()), null, 2));
 });
 //# sourceMappingURL=helper_test.js.map

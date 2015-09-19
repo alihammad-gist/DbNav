@@ -4,7 +4,7 @@
 import test = require('tape');
 import helper = require('./helper');
 import React = require('react/addons');
-import utils = require('./test_utils');
+import utils = require('./react_utils');
 
 const TestUtils = React.addons.TestUtils;
 const DOM = React.DOM;
@@ -16,7 +16,7 @@ type ReactElement = React.ReactElement<any>
 interface ExpectationData {
     data: TreeData
     props: Tree.TreeProps
-    structure: string
+    structure: utils.ElementExpectation
 }
 
 test("Testing buildUl", (t) => {
@@ -25,9 +25,10 @@ test("Testing buildUl", (t) => {
     const props: TreeProps = {
         data: d,
         factory: (item: Tree.Item): ReactElement => {
-            return DOM.i({}, "hello");
+            return DOM.i({id: "italic-master", className: "italic-group"}, "hello");
         },
         children_hash: "pages"
     };
-    utils.convertReactElToReactExpectation(helper.createUl(d, props));
+    var r = TestUtils.createRenderer();
+    r.render(helper.createUl(d, props));
 });

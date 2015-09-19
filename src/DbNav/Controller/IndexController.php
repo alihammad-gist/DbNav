@@ -8,6 +8,10 @@ use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController {
 
+    /**
+     * [$containerGateway description]
+     * @var ContainerGateway
+     */
     protected $containerGateway;
 
     public function __construct(ContainerGateway $cg) {
